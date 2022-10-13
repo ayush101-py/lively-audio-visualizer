@@ -55,7 +55,7 @@ function livelyAudioListener(audioArray)  {
   average = audioArray.reduce((acc, val) => acc + val) / audioArray.length;
   star_speed = average * 32;
   // Remove duplicate frequencies
-  let audio = audioArray.filter((elem, idx, arr) => arr[idx - 1] !== elem);
+  let audio = audioArray.filter((elem, idx, arr) => (new Set(arr)).size !== 1);//arr[idx - 1] !== elem);
   // Compensate for overamplified bass
   audio = audio.map((elem, idx, arr) => {
     return elem * (idx / arr.length + (100 - compensation + 50) / 100);
@@ -111,7 +111,7 @@ function livelyAudioListener(audioArray)  {
 
       // Color from given hue, saturation, lightness
       let color = `hsl(${
-          ((endHue - startHue) * halfRatio + startHue + 90 + (Math.pow(1,index) * 90)) % 360 // Experiment
+          ((endHue - startHue) * halfRatio + startHue + 90 - (Math.pow(1,index) * 90)) % 360 // Experiment
       }, ${saturation}%, ${lightness}%)`;
       ctx.strokeStyle = color;
       ctx.shadowColor = color;
